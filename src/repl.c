@@ -10,7 +10,7 @@ const int MAX = 256;
 void repl_halt(bool *running, int *exit_code, int status_code)
 {
     *running = false;
-    *exit_code = 0;
+    *exit_code = status_code;
 }
 
 int repl(void)
