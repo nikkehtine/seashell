@@ -1,18 +1,30 @@
 # Variables
 CC = clang
 SRC_DIR = src
-OUT_DIR = out
+BUILD_DIR = build
+OUT_DIR = $(BUILD_DIR)/out
 TARGET = seashell
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
+HEADER_FILES = $(wildcard $(SRC_DIR)/*.h)
+OBJ_DIR = $(BUILD_DIR)/obj
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
 # Compilation rule
-$(OUT_DIR)/$(TARGET): $(SRC_DIR)/main.c
-	mkdir -p $(OUT_DIR)
-	$(CC) -o $@ $<
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER_FILES)
+	mkdir -p $(OBJ_DIR)
+	$(CC) -c $< -o $@
 
+# Linking rule
+$(OUT_DIR)/$(TARGET): $(OBJ_FILES)
+	mkdir -p $(OUT_DIR)
+	$(CC) $^ -o $@
+
+# Run rule
 .PHONY: run
 run: $(OUT_DIR)/$(TARGET)
 	$(OUT_DIR)/$(TARGET)
 
+# Clean rule
 .PHONY: clean
 clean:
-	rm -rf $(OUT_DIR)
+	rm -rf $(BUILD_DIR)
