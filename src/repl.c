@@ -1,13 +1,16 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "repl.h"
-#include "variables.h"
 
-void repl_halt(bool *running, int *exit_code)
+const char PROMPT[3] = "$ ";
+const int MAX = 256;
+
+void repl_halt(bool *running, int *exit_code, int status_code)
 {
     *running = false;
-    *exit_code = 0;
+    *exit_code = status_code;
 }
 
 int repl(void)
@@ -17,8 +20,17 @@ int repl(void)
 
     while (running)
     {
-        printf("%s\n", PROMPT);
-        repl_halt(&running, &exit_code);
+        printf("%s", PROMPT);
+        char buf[MAX];
+        fgets(buf, MAX, stdin);
+        if (strlen(buf) == 1 && buf[0] == 10)
+        {
+            continue;
+        }
+        else
+        {
+            repl_halt(&running, &exit_code, 0);
+        }
     }
 
     return exit_code;
