@@ -1,5 +1,5 @@
-#ifndef variables
-#define variables
+#ifndef VARIABLES
+#define VARIABLES
 
 #ifndef PROMPT
 #define PROMPT "$ "
