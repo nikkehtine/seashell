@@ -2,7 +2,8 @@
 #include <stdio.h>
 
 #include "repl.h"
-#include "variables.h"
+
+const char PROMPT[] = "$ ";
 
 void repl_halt(bool *running, int *exit_code)
 {

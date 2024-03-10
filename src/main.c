@@ -1,13 +1,12 @@
 #include <stdio.h>
 
-#include "variables.h"
 #include "repl.h"
 
 int main(int argc, char **argv)
 {
     printf("Hello world!\n");
 
-    repl();
+    int exit_code = repl();
 
-    return 0;
+    return exit_code;
 }
