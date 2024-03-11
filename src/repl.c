@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "parse.h"
 #include "repl.h"
 
 const char PROMPT[3] = "$ ";
@@ -29,14 +30,13 @@ int repl(void)
         {
             continue;
         }
-        buf[strcspn(buf, "\n")] = 0;
-        char *command = strtok(buf, " ");
 
         // Naive parsing
+        // TODO: keep args in a list
         if (command != NULL && strcmp(command, "exit") == 0)
         {
             int arg_exit_code;
-            char *arg0 = strtok(NULL, " "); // Null makes it continue on the same string
+            char *arg0 = strtok(NULL, " "); // Null makes it continue tokenizing the same string
             if (arg0 == NULL)
             {
                 arg_exit_code = 0;
