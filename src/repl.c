@@ -1,5 +1,7 @@
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "repl.h"
@@ -23,13 +25,53 @@ int repl(void)
         printf("%s", PROMPT);
         char buf[MAX];
         fgets(buf, MAX, stdin);
-        if (strlen(buf) == 1 && buf[0] == 10)
+        if (strlen(buf) == 1 && isspace(buf[0]))
         {
             continue;
         }
-        else
+        buf[strcspn(buf, "\n")] = 0;
+        char *command = strtok(buf, " ");
+
+        // Naive parsing
+        if (command != NULL && strcmp(command, "exit") == 0)
         {
-            repl_halt(&running, &exit_code, 0);
+            int arg_exit_code;
+            char *arg0 = strtok(NULL, " "); // Null makes it continue on the same string
+            if (arg0 == NULL)
+            {
+                arg_exit_code = 0;
+            }
+            else
+            {
+                // TODO: make it not accept non-numeric arguments
+                bool arg_is_not_num = false;
+                for (size_t i = 0; i < strlen(arg0) - 1; i++)
+                {
+                    if (!isdigit(arg0[i]))
+                    {
+                        arg_is_not_num = true;
+                        break;
+                    }
+                }
+
+                int arg0_int;
+
+                // TODO: add support for negative numbers
+                if (arg_is_not_num)
+                {
+                    arg0_int = 1;
+                }
+                else
+                {
+                    arg0_int = atoi(arg0);
+                }
+                arg_exit_code = arg0_int;
+            }
+            repl_halt(&running, &exit_code, arg_exit_code);
+        }
+        else if (command != NULL)
+        {
+            printf(">>> %s\n", command);
         }
     }
 
