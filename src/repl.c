@@ -36,7 +36,7 @@ int repl(void)
         if (command != NULL && strcmp(command, "exit") == 0)
         {
             int arg_exit_code;
-            char *arg0 = strtok(NULL, " ");
+            char *arg0 = strtok(NULL, " "); // Null makes it continue on the same string
             if (arg0 == NULL)
             {
                 arg_exit_code = 0;
