@@ -43,6 +43,7 @@ int repl(void)
             }
             else
             {
+                // TODO: make it not accept non-numeric arguments
                 bool arg_is_not_num = false;
                 for (size_t i = 0; i < strlen(arg0) - 1; i++)
                 {
@@ -55,6 +56,7 @@ int repl(void)
 
                 int arg0_int;
 
+                // TODO: add support for negative numbers
                 if (arg_is_not_num)
                 {
                     arg0_int = 1;
