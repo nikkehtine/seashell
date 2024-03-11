@@ -25,18 +25,18 @@ int repl(void)
         printf("%s", PROMPT);
         char buf[MAX];
         fgets(buf, MAX, stdin);
-
         if (strlen(buf) == 1 && isspace(buf[0]))
         {
             continue;
         }
+        buf[strcspn(buf, "\n")] = 0;
+        char *command = strtok(buf, " ");
 
         // Naive parsing
-        char *command = strtok(buf, " ");
-        if (command != NULL && strcmp(buf, "exit") == 0)
+        if (command != NULL && strcmp(command, "exit") == 0)
         {
             int arg_exit_code;
-            char *arg0 = strtok(buf, " ");
+            char *arg0 = strtok(NULL, " ");
             if (arg0 == NULL)
             {
                 arg_exit_code = 0;
@@ -44,7 +44,7 @@ int repl(void)
             else
             {
                 bool arg_is_not_num = false;
-                for (size_t i = 0; i < strlen(arg0); i++)
+                for (size_t i = 0; i < strlen(arg0) - 1; i++)
                 {
                     if (!isdigit(arg0[i]))
                     {
@@ -57,11 +57,11 @@ int repl(void)
 
                 if (arg_is_not_num)
                 {
-                    arg0_int = atoi(arg0);
+                    arg0_int = 1;
                 }
                 else
                 {
-                    arg0_int = 1;
+                    arg0_int = atoi(arg0);
                 }
                 arg_exit_code = arg0_int;
             }
